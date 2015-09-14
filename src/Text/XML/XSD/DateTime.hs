@@ -24,7 +24,7 @@ module Text.XML.XSD.DateTime
        ) where
 
 import           Prelude(Show(..), Read(..), Eq(..), Ord(..), Num(..), Int, Integer, String, (&&), (||), read, fromIntegral, realToFrac)
-import           Control.Applicative (pure, (<$>), (*>), (<|>))
+import           Control.Applicative (pure, (<$>), (*>), (<*), (<|>))
 import           Control.Monad (Monad(..), when)
 import           Control.Lens(Iso', Prism', _Left, _Right, iso, prism', from, isn't, (#), (^?))
 import           Data.Attoparsec.Text(Parser, char, digit, parseOnly, endOfInput, takeWhile)
@@ -269,7 +269,7 @@ dateTime' ::
   Text
   -> Either String DateTime
 dateTime' =
-  parseOnly (parseDateTime <|> fail "bad date time")
+  parseOnly (parseDateTime <* endOfInput <|> fail "bad date time")
 
 buildSeconds ::
   Pico
